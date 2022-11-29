@@ -1,6 +1,8 @@
 package com.snake;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Random;
 
 import javafx.application.Platform;
@@ -23,8 +25,10 @@ public class GameLoop {
             Snake.headPos.x++;
 
         if (isEnd(rootCanvas))
-            Platform.exit();
-  
+        {
+        	App.stage.setScene(App.mainScene);
+//        	Platform.exit();
+        }
         else {
             Snake.pos.add(new Point(Snake.headPos.x, Snake.headPos.y));
             fillCell(rootCanvas, Snake.headPos, Snake.tailPos = Snake.pos.poll(), "#CCCCCC");
@@ -33,6 +37,17 @@ public class GameLoop {
         if (isEat(rootCanvas)) eat();
     }
 
+    
+    private static String auto(){
+    	try {
+			return new File(App.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getPath();
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			System.out.println("empty");
+			return "";
+		}
+    }
+    
     private static void fillCell(TilePane rootCanvas, Point _new, Point _old, String _color) {
         rootCanvas.getChildren().get(_new.y * 20 + _new.x).setStyle("-fx-background-color: " + _color +";");
         if (_old != null)

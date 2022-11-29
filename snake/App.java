@@ -28,6 +28,8 @@ import java.util.TimerTask;
 public class App extends Application {
 	static Stage stage;
 	static Scene mainScene, gameScene;
+	static Timer gameTimer;
+	static TimerTask gameLoop;
 	
     @Override
     public void start(Stage stage) throws IOException {
@@ -53,7 +55,6 @@ public class App extends Application {
     	mainPane.setTop(top);
     	mainPane.setCenter(center);
     	
-    	//mainPane.getChildren().addAll(mainLabel, gameStartBtn);
     	mainScene = new Scene(mainPane, 400, 400);
     	
     	// 게임 화면 설정
@@ -68,7 +69,7 @@ public class App extends Application {
 		// 게임 내부 설정
 		GameController controller = fxmlLoader.getController();
 		
-		Timer gameTimer = new Timer(true);
+		gameTimer = new Timer(true);
 		
 		fxmlLoader.setController(fxmlLoader);
 		gameScene.setOnKeyPressed(e -> controller.OnKeyPress(e.getCode()));
@@ -84,7 +85,7 @@ public class App extends Application {
 		GameLoop.putSeed(controller.rootCanvas);
 		Snake.headPos = new Point(10, 10);
 		
-		TimerTask gameLoop = new TimerTask() {
+		gameLoop = new TimerTask() {
 			@Override
 			public void run() {
 				try {
@@ -96,7 +97,6 @@ public class App extends Application {
     	// 버튼 동작 ( 게임 씬으로 변경 )
     	gameStartBtn.setOnAction(e->{
     		stage.setScene(gameScene);
-    		gameTimer.schedule(gameLoop, 0, 100); 
     	});
     }
 
@@ -108,5 +108,4 @@ public class App extends Application {
     public static void main(String[] args) {
         launch();
     }
-
-}
+ }
